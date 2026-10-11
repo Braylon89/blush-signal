@@ -1,29 +1,30 @@
 # BLUSH // SIGNAL
 
-A little browser synth by Braylon. Pink and chrome on the outside; mellow, woozy, slightly fuzzy sounds on the inside.
+A little beat machine by Braylon. Pink and chrome on the outside; hazy synths, deep 808s, and dusty drums on the inside.
 
-**[Play the synth →](https://braylon89.github.io/blush-signal/)**
+**[Make a beat →](https://braylon89.github.io/blush-signal/)**
 
-## Make a sound
+## Start anywhere
 
-Tap the piano keys or use **A W S E D F T G Y H U J K O L P ;** on your computer keyboard. Hold more than one key to play together. Choose single notes, minor 7 chords, or major 7 chords. Change octaves for lower bass or higher keys.
+Press **Play** and tap the 16-step grid. Each row is a separate sound: Dream keys, 808 bass, kick, snare, hi-hat, and clap. Layer them, change each volume, or use **M** to mute and **S** to solo. Hazy Starter and Dusty Bounce give you something to change; Empty Canvas starts fresh. Select a melodic row and a step, then choose its pitch below the grid. The four original synth presets are Pink Haze, Bedroom Keys, Slow Orbit, and Fuzzy Heart.
 
-Four original presets explore hazy bedroom-pop textures:
+For a no-keyboard option, choose **Playground**. Tap or drag across the glowing bubbles to play musical notes. Use the Dream, Low End, Heartbeat, and Sparkle switches to shape the backing beat. **New star loop** starts the backing beat and writes your bubble taps into a visible 16-step melody. **Finish loop** keeps that melody repeating. **Record jam** captures the live mix; finish the take, listen back, and save it as WAV or MP3. The Write My Stars switch can also add notes to an existing loop. You can also play the synth with A S D F G H J K.
 
-- **Pink Haze** — detuned analog chords with chorus and a warm room
-- **Bedroom Keys** — soft triangle keys, tape wobble, and gentle saturation
-- **Slow Orbit** — a slowly opening pad with a long tail
-- **Fuzzy Heart** — rounded square-wave bass with a lower sine oscillator
+## Shape and combine sounds
 
-Drag the chrome dials up or down, use the sliders below them, or adjust them with the arrow keys. Tone, detune, fade-in, tail, chorus, tape, fuzz, room, echo, and volume change the sound.
+Each row has its own **filter, fuzz, reverb, and tempo-synced echo**. Select its name to edit the effects, even while the beat plays. The 808 has a separate tail and grit control.
 
-## Make a loop
+**Import sound** adds your own audio as a new row. Up to four imported sounds, 25 MB per file, with a maximum source length of two minutes. Audio decoding depends on your browser's supported formats; WAV and MP3 are good starting points. Imported rows have playback length (up to eight seconds), pitch, effects, and a Replace File option. Imports and saved projects stay on your device. They are never uploaded. **Save loop** saves the project and its imported files together in IndexedDB; Load Saved restores them. Your previous synth-only saved patch can also be loaded.
 
-Tap the grid to choose one note per step. Tap it again to remove it. Change the root, tempo, and swing, or use **Surprise me** for a new melody. Play Loop starts the 16-step pattern. Space toggles the loop when the page is focused outside a form control. Escape or All Notes Off stops it. Playback stops when you leave the tab.
+## Playback, recording, and export
 
-**Save my sound** keeps your patch and pattern on this device. **Export WAV** makes a stereo WAV with four repeats and the effect tail, ready to use elsewhere. Export renders locally in your browser.
+- **Speed / BPM** changes the tempo from 50 to 160 BPM. Swing changes the groove.
+- **Play for** chooses Forever, 1/4/8 loops, or a time limit from 0.1 to 30 minutes. Forever continues until you stop it; playback can continue in a background tab, subject to browser suspension or device sleep.
+- **Record** captures the mixed audio and live playing without microphone access. Finish Take creates a playback preview. Save the take as WAV or MP3 with the format selector.
+- **Export** renders 1, 4, or 8 repeats of all audible rows and their effects, including an effect tail. WAV is stereo PCM; MP3 is stereo at 192 kbps. Recorded takes retain the audio context's sample rate; rendered loops use 44.1 kHz.
+- Space starts/stops playback outside form controls. Escape stops playback and recording.
 
-No samples, plugins, microphone access, accounts, or build dependencies. All sound is synthesized with Web Audio. Nothing plays until you tap a key or Play Loop.
+All synthesis, effects, recording, import decoding, and export happen in the browser. There are no accounts or paid services.
 
 ## Run locally
 
@@ -31,9 +32,10 @@ No samples, plugins, microphone access, accounts, or build dependencies. All sou
 python3 -m http.server 8767 --bind 127.0.0.1
 ```
 
-Open `http://127.0.0.1:8767`. The same static files work on GitHub Pages.
+Open `http://127.0.0.1:8767`. The static files also run on GitHub Pages. No build or install step is needed.
 
-- `engine.mjs` — notes, chord voicings, swing timing, saved-data normalization, and WAV encoding
-- `audio.mjs` — oscillators, envelopes, effects, polyphony, and offline audio export
-- `synth.mjs` — keyboard, sequencer, controls, and visualizer
-- `index.html` / `style.css` — the little sound machine
+`beats.mjs` handles the layered project, scheduling data, validation, and saved-patch migration. `groove.mjs` mixes the synth, generated drums, 808, imported audio, and per-row effects. `audio.mjs` and `engine.mjs` contain the original synth and sound helpers. `synth.mjs` handles the interface, playback, recording, import, and project storage.
+
+## MP3 encoder attribution
+
+MP3 export uses the **unmodified [lamejs 1.2.1](https://github.com/zhuker/lamejs)** browser bundle, distributed separately as `lame.min.js` and used in `mp3-worker.js`. LAME is licensed under the LGPL. See `LICENSE-lamejs.txt` and `COPYING-lamejs.txt`. Upstream source is available from the linked repository and [LAME](https://lame.sourceforge.net/). The app's interface and synthesis code are separate from the encoder.

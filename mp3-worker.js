@@ -1,0 +1,3 @@
+/* MP3 encoding uses the unmodified LGPL lamejs 1.2.1 bundle. See LICENSE-lamejs.txt. */
+importScripts('./lame.min.js');
+onmessage=({data:{left,right,rate}})=>{try{const pcm=values=>{const out=new Int16Array(values.length);for(let i=0;i<out.length;i++){const n=Math.max(-1,Math.min(1,values[i]));out[i]=n<0?n*32768:n*32767;}return out;},l=pcm(left),r=pcm(right),encoder=new lamejs.Mp3Encoder(2,rate,192),parts=[];for(let i=0;i<l.length;i+=1152){const part=encoder.encodeBuffer(l.subarray(i,i+1152),r.subarray(i,i+1152));if(part.length)parts.push(new Uint8Array(part));}const final=encoder.flush();if(final.length)parts.push(new Uint8Array(final));postMessage({parts},parts.map(p=>p.buffer));}catch(error){postMessage({error:error.message});}};
